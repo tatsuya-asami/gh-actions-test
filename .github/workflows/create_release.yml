@@ -13,8 +13,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set current date
-        run: echo '::set-env name=DATE::date'
+      - name: Create Current date
+        id: date
+        run: echo "::set-output name=date"
 
       - name: Create Release
         id: create_release
@@ -22,12 +23,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
-          tag_name: ${{ DATE }}
-          release_name:  ${{ steps.date.outputs.date}}_0_release_${{ DATE }}
+          tag_name: ${{ steps.date.outputs.date}}
+          release_name:  test
           body: |
             Changes in this Release
             - First Change
             - Second Change
-            ${{github.ref}}
           draft: false
           prerelease: false
