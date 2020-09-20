@@ -27,13 +27,14 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
-          tag_name: ${{ steps.date.outputs.date}}_1_release_${{ steps.branch.outputs.branch }}d
-          release_name:  ${{ steps.date.outputs.date}}a
+          tag_name: ${{ steps.date.outputs.date}}_1_release_${{ steps.branch.outputs.branch }}fdsa
+          release_name:  ${{ steps.date.outputs.date}}asdf
           body: |
             Changes in this Release
             - First Change
             - Second Change
             ${{ steps.branch.outputs.branch }}
+            ${{ github }}
             ${{ github.head_ref }}
             ${{ github.ref }}
             
