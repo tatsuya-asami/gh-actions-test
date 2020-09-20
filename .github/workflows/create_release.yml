@@ -19,7 +19,8 @@ jobs:
 
       - name: Set current branch name
         id: branch
-        run: echo "::set-output name=branch::${{ github.ref }}"
+        
+        run: echo "::set-output name=branch::${GITHUB_REF##*/}"
 
       - name: Create Release
         id: create_release
