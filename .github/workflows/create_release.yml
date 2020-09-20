@@ -17,13 +17,17 @@ jobs:
         id: date
         run: echo "::set-output name=date::$(date +'%Y%m%d')"
 
+      - name: Set current branch name
+        id: branch
+        run: echo "::set-output name=branch::${{ github.ref }}"
+
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
-          tag_name: ${{ steps.date.outputs.date}}_0_${{ github.ref##*/}}
+          tag_name: ${{ steps.date.outputs.date}}_0_${{ steps.date.outputs.branch.outputs.branch }}
           release_name:  ${{ steps.date.outputs.date}}c
           body: |
             Changes in this Release
