@@ -16,7 +16,7 @@ jobs:
       - name: Create Current date
         id: date
         run: date=date
-            echo "date"
+            echo "$date"
 
       - name: Create Release
         id: create_release
