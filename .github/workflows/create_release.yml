@@ -39,5 +39,5 @@ jobs:
             - Second Change
             ${{ steps.branch.outputs.branch }}
             
-          draft: false
+          draft: true
           prerelease: false
