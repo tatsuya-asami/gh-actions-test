@@ -18,7 +18,8 @@ jobs:
         run: echo "::set-output name=number_of_deploy_today::0"
 
       - name: Get tags
-        run: git tag -l
+        id: tag
+        run: echo "::set-output name=list::${{git tag -l}}""
 
       - name: Set current date
         id: date
@@ -40,6 +41,7 @@ jobs:
             Changes in this Release
             - First Change
             - Second Change
+            ${{ steps.tag.outputs.list }}
             ${{ steps.branch.outputs.branch }}
             
           draft: true
