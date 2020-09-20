@@ -15,7 +15,7 @@ jobs:
 
       - name: Create Current date
         id: date
-        run: echo '::set-output name=date::aatest'
+        run: echo '::set-output name=date::"date"'
 
       - name: Create Release
         id: create_release
