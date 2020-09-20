@@ -19,7 +19,7 @@ jobs:
 
       - name: Set current branch name
         id: branch
-        run: echo "::set-output name=branch::${{ github.ref }}"
+        run: echo "::set-output name=branch::${{ github.ref }#refs/heads/}"
 
       - name: Create Release
         id: create_release
@@ -33,7 +33,7 @@ jobs:
             Changes in this Release
             - First Change
             - Second Change
-            ${{ steps.branch.outputs.branch##*/ }}
+            ${{ steps.branch.outputs.branch }}
             
           draft: false
           prerelease: false
