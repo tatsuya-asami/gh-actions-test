@@ -15,7 +15,7 @@ jobs:
 
       - name: Create Current date
         id: date
-        run: echo "::set-output name=date"
+        run: echo '::set-output name=date::aatest'
 
       - name: Create Release
         id: create_release
@@ -23,7 +23,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
-          tag_name: ${{ steps.date.outputs.date}}
+          tag_name: ${{ steps.date.outputs.date}}a
           release_name:  test
           body: |
             Changes in this Release
