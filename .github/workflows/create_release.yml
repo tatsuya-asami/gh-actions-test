@@ -19,7 +19,6 @@ jobs:
 
       - name: Set current branch name
         id: branch
-        
         run: echo "::set-output name=branch::${GITHUB_REF##*/}"
 
       - name: Create Release
@@ -28,18 +27,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
-          tag_name: ${{ steps.date.outputs.date}}_1_release_${{ steps.branch.outputs.branch }}aaa
-          release_name:  ${{ steps.date.outputs.date}}asdff
+          tag_name: ${{ steps.date.outputs.date}}_1_release_${{ steps.branch.outputs.branch }}abc
+          release_name:  ${{ steps.date.outputs.date}}_1_release_${{ steps.branch.outputs.branch }}abc
           body: |
             Changes in this Release
             - First Change
             - Second Change
             ${{ steps.branch.outputs.branch }}
-            ${{ github.base_ref }}
-            ${{ github.base_sha }}
-            ${{ github.base_event_name }}
-            ${{ github.head_ref }}
-            ${{ github.ref }}
             
           draft: false
           prerelease: false
