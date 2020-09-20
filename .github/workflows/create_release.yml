@@ -18,7 +18,7 @@ jobs:
         run: echo "::set-output name=number_of_deploy_today::0"
 
       - name: Get tags
-        run: git fetch --prune --unshallow --tags
+        run: git tag -l
 
       - name: Set current date
         id: date
