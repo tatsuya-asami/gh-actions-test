@@ -31,8 +31,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
-          tag_name: ${{ steps.date.outputs.date}}_{ steps.number_of_deploy_today.outputs.number_of_deploy_today}_release_${{ steps.branch.outputs.branch }}abcd
-          release_name:  ${{ steps.date.outputs.date}}_{ steps.number_of_deploy_today.outputs.number_of_deploy_today}_release_${{ steps.branch.outputs.branch }}abcd
+          tag_name: ${{ steps.date.outputs.date}}_${{ steps.number_of_deploy_today.outputs.number_of_deploy_today}}_release_${{ steps.branch.outputs.branch }}abcd
+          release_name:  ${{ steps.date.outputs.date}}_${{ steps.number_of_deploy_today.outputs.number_of_deploy_today}}_release_${{ steps.branch.outputs.branch }}abcd
           body: |
             Changes in this Release
             - First Change
