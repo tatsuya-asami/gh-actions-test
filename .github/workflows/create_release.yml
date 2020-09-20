@@ -15,7 +15,7 @@ jobs:
 
       - name: Create Current date
         id: date
-        run: echo '::set-output name=date::$(date)'
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
 
       - name: Create Release
         id: create_release
