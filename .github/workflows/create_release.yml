@@ -19,7 +19,7 @@ jobs:
 
       - name: Get tags
         id: tag
-        run: echo "::set-output name=list::${{git tag -l}}""
+        run: echo "::set-output name=list::${git tag -l}""
 
       - name: Set current date
         id: date
