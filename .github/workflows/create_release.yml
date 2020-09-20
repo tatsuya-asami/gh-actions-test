@@ -33,5 +33,7 @@ jobs:
             Changes in this Release
             - First Change
             - Second Change
+            ${{ steps.branch.outputs.branch }}
+            
           draft: false
           prerelease: false
