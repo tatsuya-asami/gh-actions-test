@@ -20,7 +20,7 @@ jobs:
       - name: Get tags
         id: tag
         run: |
-          echo git tag -l
+          echo \git tag
 
       - name: Set current date
         id: date
@@ -29,6 +29,16 @@ jobs:
       - name: Set current branch name
         id: branch
         run: echo "::set-output name=branch::${GITHUB_REF##*/}"
+
+      - name: Set body from a comment of pull request.
+        id: set_body
+        uses: actions/github-script@v3
+        with: 
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            const diff_url = context.payload.pull_request.diff_url
+            const result = await github.request(diff_url)
+            console.log(result)
 
       - name: Create Release
         id: create_release
