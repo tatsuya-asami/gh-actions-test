@@ -32,4 +32,4 @@ jobs:
             console.log(lastReleaseTag)
             const dateTime = lastReleaseTag.created_at
             console.log(dateTime)
-            console.log(dateTime.parse())
+            console.log(Date.parse(dateTime))
