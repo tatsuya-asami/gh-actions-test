@@ -42,7 +42,7 @@ jobs:
             const test = await github.pulls.list({
               owner,
               repo,
-              state: closed
+              state: 'closed'
             })
             console.log(test)
 
