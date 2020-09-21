@@ -36,14 +36,24 @@ jobs:
         with: 
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            const { commits } = await context.payload;
+            const { commits } = await context.payload
+            # mergeコミットを取得
             const mergeCommit = commits.find((object) => object.message.includes('Merge pull request'))
             if(!mergeCommit) {
               console.error('merge commitが存在しません。手動でリリースを作成して下さい。')
             }
             console.log(mergeCommit)
-            const pullRequestNumber = mergeCommit.message.split(' ')[3].slice(1)
-            console.log(pullRequestNumber)
+            # mergeコミットのメッセージから、mergeされたプルリクの番号を取得
+            const pull_number = mergeCommit.message.split(' ')[3].slice(1)
+            console.log(pull_number)
+
+            const { owner, repo} = await context.repo
+            # mergeされたプルリクの内容を取得
+            const test = await github.pulls.get({
+              owner,
+              repo,
+              pull_number
+            })
             
       - name: Create Release
         id: create_release
