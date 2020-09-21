@@ -37,9 +37,11 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             const { commits } = await context.payload;
-            const mergeCommitIndex = commits.find((object) => object.message.includes('Merge pull request'))
-            console.log(mergeCommitIndex)
-            console.log(commits[mergeCommitIndex])
+            const mergeCommit = commits.find((object) => object.message.includes('Merge pull request'))
+            if(!mergeCommit) {
+              console.error('merge commitが存在しません。手動でリリースを作成して下さい。')
+            }
+            console.log(mergeCommit)
             
       - name: Create Release
         id: create_release
