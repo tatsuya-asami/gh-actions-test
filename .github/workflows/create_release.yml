@@ -52,7 +52,7 @@ jobs:
             })
             // 出力
             console.log(data.body)
-            return data.body
+            return echo "${{steps.set_body.outputs.result}}""
             
       - name: Create Release
         id: create_release
@@ -64,6 +64,7 @@ jobs:
           release_name:  ${{ steps.date.outputs.date}}_${{ steps.number_of_deploy_today.outputs.number_of_deploy_today}}_release_${{ steps.branch.outputs.branch }}
           body: |
             ${{ steps.set_body.outputs}}
+            ${{ steps.set_body.outputs.result}}
             - First Change
             - Second Change
             ${{ steps.tag.outputs.list }}
