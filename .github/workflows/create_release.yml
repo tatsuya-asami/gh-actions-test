@@ -45,12 +45,14 @@ jobs:
             const pull_number = mergeCommit.message.split(' ')[3].slice(1)
             console.log(pull_number)
             const { owner, repo } = await context.payload
-            const { data } = await github.pulls.get({
+            console.log(owner)
+            console.log(repo)
+            const testA = await github.pulls.get({
               owner,
               repo,
               pull_number
             })
-            console.log(data)
+            console.log(testA)
             
       - name: Create Release
         id: create_release
