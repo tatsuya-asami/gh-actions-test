@@ -47,9 +47,8 @@ jobs:
             const pull_number = mergeCommit.message.split(' ')[3].slice(1)
             console.log(pull_number)
 
-            const { owner, repo } = await context.repo
-            console.log(owner)
-            console.log(repo)
+            console.log(context)
+            console.log(context.repo)
             
       - name: Create Release
         id: create_release
