@@ -48,7 +48,6 @@ jobs:
             console.log(pull_number)
 
             console.log(context)
-            console.log(context.repo)
             
       - name: Create Release
         id: create_release
