@@ -33,6 +33,7 @@ jobs:
       - name: Set body from a comment of pull request.
         id: set_body
         uses: actions/github-script@v3
+        result-encoding: string
         with: 
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
