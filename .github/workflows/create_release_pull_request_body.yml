@@ -28,12 +28,13 @@ jobs:
             })
             // console.log(data)
             const branchName = 'master'
-            const filteredReleases = data.filter((object) => !object.draft && object.name.includes(branchName))
-            console.log(filteredReleases)
-            const mappedReleases = filteredReleases.map((param) => {
-              return {
-                ...param,
-                created_at: Date.parse(param.created_at)
-              }
+            const filteredReleases = 
+              data
+                .filter((object) => !object.draft && object.name.includes(branchName))
+                .map((param) => {
+                  return {
+                    ...param,
+                    created_at: Date.parse(param.created_at)
+                  }
             })
-            console.log(mappedReleases)
+            console.log(filteredReleases)
