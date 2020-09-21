@@ -36,7 +36,8 @@ jobs:
         with: 
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            const repo = context.repo
+            const { owner, repo} = context.repo
+            console.log(owner)
             console.log(repo)
 
       - name: Create Release
