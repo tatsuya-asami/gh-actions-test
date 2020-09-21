@@ -52,7 +52,7 @@ jobs:
             console.log(data)
             console.log(data.comments_url)
 
-            const comment = await github.listReviewComments({
+            const comment = await github.pulls.listReviewComments({
               owner,
               repo,
               pull_number
