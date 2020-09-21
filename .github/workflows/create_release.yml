@@ -44,7 +44,9 @@ jobs:
               repo,
               state: 'closed'
             })
+            console.log(test.data[0])
             console.log(test)
+            console.log(context.payload)
 
       - name: Create Release
         id: create_release
