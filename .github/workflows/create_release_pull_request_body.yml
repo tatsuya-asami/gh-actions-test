@@ -34,5 +34,4 @@ jobs:
                 .sort((a, b) => {
                   return Date.parse(a.published_at) + Date.parse(b.published_at)
                 })
-            })
             console.log(filteredReleases)
