@@ -36,7 +36,7 @@ jobs:
         with: 
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            const { commits } = contest.payload;
+            const { commits } = context.payload;
             const mergeCommitIndex = commits.find((object) => object.message.indexOf('Merge pull request'))
             console.log(commits[mergeCommit])
             
