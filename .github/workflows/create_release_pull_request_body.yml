@@ -22,11 +22,14 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: | 
             const { owner, repo } = await context.repo
-            console.log(owner)
-            console.log(repo)
-            const test = await github.repos.listRelease({
+            const { data } = await github.repos.listReleases({
               owner,
               repo,
             })
-            console.log(test)
-            console.log('done')
+            console.log(data)
+            const branchName = 'master'
+            const lastReleaseTag = data.find((object) => !object.draft && object.name.includes(branchName))
+            console.log(lastReleaseTag)
+            const dateTime = lastReleaseTag.created_at
+            console.log(dateTime)
+            console.log(dateTime.parse())
