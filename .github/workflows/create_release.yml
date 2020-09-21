@@ -50,12 +50,11 @@ jobs:
               pull_number
             })
             console.log(data)
-            console.log(data.comments_url)
 
-            const comment = await github.pulls.listReviewComments({
+            const comment = await github.issues.getComment({
               owner,
               repo,
-              pull_number
+              comment_id: 695969803
             })
             console.log(comment)
             
