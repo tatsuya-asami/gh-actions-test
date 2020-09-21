@@ -37,7 +37,7 @@ jobs:
               owner,
               repo,
             })
-            console.log(steps.branch)
+            console.log(steps.branch.outputs.result)
             const branchName = 'master'
             const sortedReleaseList = 
               data
