@@ -1,7 +1,8 @@
 on:
   push:
     branches:
-      - master
+      - '**/master'
+      - '**/demo'
 
 name: Create Release
 
