@@ -51,6 +51,7 @@ jobs:
             })
             // 出力
             console.log(data.body)
+            return data.body
             
       - name: Create Release
         id: create_release
@@ -61,7 +62,7 @@ jobs:
           tag_name: ${{ steps.date.outputs.date}}_${{ steps.number_of_deploy_today.outputs.number_of_deploy_today}}_release_${{ steps.branch.outputs.branch }}
           release_name:  ${{ steps.date.outputs.date}}_${{ steps.number_of_deploy_today.outputs.number_of_deploy_today}}_release_${{ steps.branch.outputs.branch }}
           body: |
-            Changes in this Release
+            ${{ steps.set_body.outputs}}
             - First Change
             - Second Change
             ${{ steps.tag.outputs.list }}
