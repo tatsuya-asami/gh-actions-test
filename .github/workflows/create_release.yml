@@ -36,19 +36,22 @@ jobs:
         with: 
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            const issues = await github.pulls.get({
-              owner: context.repo.owner,
-              repo: context.repo.repo
-              pull_number: 60
-            })
-            console.log(issues)
-            const test = context.issue[60]
-            console.log(test)
-            console.log(context.payload.repository.pulls_url[60])
-            console.log(context.payload.repository.pulls_url)
-            const payload = context.payload
-            const pulls = payload.repository
-            console.log(pulls)
+            const { owner, repo} = context.repo
+            console.log(owner)
+            console.log(repo)
+            # const issues = await github.pulls.get({
+            #   owner: context.repo.owner,
+            #   repo: context.repo.repo
+            #   pull_number: 60
+            # })
+            # console.log(issues)
+            # const test = context.issue[60]
+            # console.log(test)
+            # console.log(context.payload.repository.pulls_url[60])
+            # console.log(context.payload.repository.pulls_url)
+            # const payload = context.payload
+            # const pulls = payload.repository
+            # console.log(pulls)
 
       - name: Create Release
         id: create_release
