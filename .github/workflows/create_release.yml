@@ -1,10 +1,10 @@
+name: Create Release
+
 on:
   push:
     branches:
       - '**/master'
       - '**/demo'
-
-name: Create Release
 
 jobs:
   build:
@@ -16,6 +16,7 @@ jobs:
 
       - name: Set how many deployments today
         id: number_of_deploy_today
+        # FIX_ME: 本日何度目のdeployか。条件が難しい。
         run: echo "::set-output name=number_of_deploy_today::0"
 
       - name: Set current date
@@ -26,7 +27,7 @@ jobs:
         id: branch
         run: echo "::set-output name=branch::${GITHUB_REF##*/}"
 
-      - name: Set body from a comment of pull request.
+      - name: Set a body from a comment of pull request.
         id: set_body
         uses: actions/github-script@v3
         with: 
@@ -51,7 +52,7 @@ jobs:
             })
             return data.body
             
-      - name: Create Release
+      - name: Create draft release
         id: create_release
         uses: actions/create-release@v1
         env:
