@@ -9,6 +9,9 @@ jobs:
     name: Put logs
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
       - name: Get all tags
         id: tag
         uses: actions/github-script@v3
