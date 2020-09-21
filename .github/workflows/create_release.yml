@@ -39,6 +39,7 @@ jobs:
             const { commits } = context.payload;
             console.log(commits)
             const mergeCommitIndex = commits.find((object) => object.message.includes('Merge pull request'))
+            console.log(mergeCommitIndex)
             console.log(commits[mergeCommitIndex])
             
       - name: Create Release
