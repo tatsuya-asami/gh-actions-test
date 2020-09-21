@@ -46,8 +46,6 @@ jobs:
             # mergeコミットのメッセージから、mergeされたプルリクの番号を取得
             const pull_number = mergeCommit.message.split(' ')[3].slice(1)
             console.log(pull_number)
-
-            console.log(context)
             
       - name: Create Release
         id: create_release
