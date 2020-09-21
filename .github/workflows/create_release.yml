@@ -36,9 +36,9 @@ jobs:
         with: 
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            const diff_url = context.payload.pull_request.diff_url
-            const result = await github.request(diff_url)
-            console.log(result)
+            const test = context
+            console.log(test)
+            console.log(test.payload)
 
       - name: Create Release
         id: create_release
