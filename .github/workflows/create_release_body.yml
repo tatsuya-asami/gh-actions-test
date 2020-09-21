@@ -28,3 +28,4 @@ jobs:
               repo,
             })
             console.log(test)
+            console.log('done')
