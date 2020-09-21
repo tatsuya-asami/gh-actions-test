@@ -39,6 +39,11 @@ jobs:
             const { owner, repo} = context.repo
             const number = context.issue;
             console.log(number)
+            const test = await github.pulls.list({
+              owner,
+              repo
+            })
+            console.log(test)
 
       - name: Create Release
         id: create_release
