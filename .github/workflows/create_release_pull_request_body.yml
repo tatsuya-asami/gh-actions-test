@@ -28,7 +28,11 @@ jobs:
             })
             console.log(data)
             const branchName = 'master'
-            const lastReleaseTag = data.find((object) => !object.draft && object.name.includes(branchName))
+            const filteredReleases = data.filter((object) => !object.object.draft && object.name.includes(branchName)).map((target) => {...target, created_ad: Date.parse(target.created_at)})
+            console.log(filteredReleases)
+
+
+            const lastReleaseTag = data.find((object) => !object.draft && object.name.includes(branchName) && object.)
             console.log(lastReleaseTag)
             const dateTime = lastReleaseTag.created_at
             console.log(dateTime)
