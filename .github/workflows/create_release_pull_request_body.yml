@@ -38,3 +38,7 @@ jobs:
                   }
             })
             console.log(filteredReleases)
+            const sorted = filteredReleases.sort((a,b) => {
+              return a.created_at - b.created_at
+            })
+            console.log(sorted)
