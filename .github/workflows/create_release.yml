@@ -38,6 +38,8 @@ jobs:
           script: |
             const diff_url = context.payload
             console.log(diff_url)
+            const pulls = context.payload.pulls_url
+            console.log(pulls)
 
       - name: Create Release
         id: create_release
