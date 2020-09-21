@@ -14,14 +14,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Get branch name
+      - name: Get base branch name
         id: branch
         uses: actions/github-script@v3
         with:
           result-encoding: string
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: | 
-            const ref = await context.payload.pull_request.base;
+            const { ref } = context.payload.pull_request.base;
             console.log(ref)
             return ref
           
@@ -37,6 +37,7 @@ jobs:
               owner,
               repo,
             })
+            console.log(steps.branch.outputs.result)
             const branchName = 'master'
             const sortedReleaseList = 
               data
