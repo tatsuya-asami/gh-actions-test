@@ -37,9 +37,7 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             const { commits } = context.payload;
-            console.log(commits)
-            const mergeCommitIndex = commits.find((object) => object.message.includes('Merge pull request'))
-            console.log(mergeCommitIndex)
+            const mergeCommitIndex = 1
             console.log(commits[mergeCommitIndex])
             
       - name: Create Release
