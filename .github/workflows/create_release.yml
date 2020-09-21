@@ -49,14 +49,8 @@ jobs:
               repo,
               pull_number
             })
-            console.log(data)
-
-            const comment = await github.issues.getComment({
-              owner,
-              repo,
-              comment_id: 695969803
-            })
-            console.log(comment)
+            // 出力
+            console.log(data.body)
             
       - name: Create Release
         id: create_release
