@@ -24,7 +24,7 @@ jobs:
             const { owner, repo } = await context.repo
             console.log(owner)
             console.log(repo)
-            const test = await github.repos.listRelease({
+            const test = await github.repos.listReleases({
               owner,
               repo,
             })
