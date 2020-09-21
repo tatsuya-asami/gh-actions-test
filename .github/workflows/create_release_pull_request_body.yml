@@ -28,5 +28,5 @@ jobs:
             })
             console.log(data)
             const branchName = 'master'
-            const filteredReleases = data.filter((object) => !object.draft && object.name.includes(branchName)).map((target) => {...target, created_ad: Date.parse(target.created_at)})
+            const filteredReleases = data.filter((object) => !object.draft && object.name.includes(branchName))
             console.log(filteredReleases)
