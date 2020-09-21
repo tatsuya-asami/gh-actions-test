@@ -42,7 +42,7 @@ jobs:
               console.error('merge commitが存在しません。手動でリリースを作成して下さい。')
             }
             console.log(mergeCommit)
-            const pullRequestNumber = message.split(' ')[3].slice(1)
+            const pullRequestNumber = mergeCommit.split(' ')[3].slice(1)
             console.log(pullRequestNumber)
             
       - name: Create Release
