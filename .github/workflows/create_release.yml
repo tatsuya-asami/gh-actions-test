@@ -36,16 +36,6 @@ jobs:
         with: 
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            const { owner, repo} = context.repo
-            const number = context.issue;
-            console.log(number)
-            const test = await github.pulls.list({
-              owner,
-              repo,
-              state: 'closed'
-            })
-            console.log(test.data[0])
-            console.log(test)
             console.log(context.payload)
 
       - name: Create Release
