@@ -1,4 +1,4 @@
-name: Put logs on a body of release pull request
+name: Set change logs on a pull request body
 
 on:
   pull_request:
@@ -8,42 +8,92 @@ on:
 
 jobs:
   build:
-    name: Put logs
+    name: Set change logs on a pull request body
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
       - name: Get base branch name
-        id: branch
+        id: base_branch
         uses: actions/github-script@v3
         with:
-          result-encoding: string
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: | 
             const { ref } = context.payload.pull_request.base;
             console.log(ref)
             return ref
-          
-      - name: Get related tags
-        id: tag
+
+      - name: Get current branch name
+        id: head_branch
         uses: actions/github-script@v3
         with:
-          result-encoding: string
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: | 
-            const { owner, repo } = await context.repo
+            const { ref } = context.payload.pull_request.head;
+            console.log(ref)
+            return ref
+          
+      - name: Get related release list
+        id: tag_list
+        uses: actions/github-script@v3
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: | 
+            const { owner, repo } = context.repo
             const { data } = await github.repos.listReleases({
               owner,
               repo,
             })
-            console.log(steps.branch.outputs.result)
-            const branchName = 'master'
+            // 同じbaseブランチのドラフトを除くrelease一覧を抽出し、新しいreleaseから順番に並び替える
             const sortedReleaseList = 
               data
-                .filter((object) => !object.draft && object.name.includes(branchName))
+                .filter((object) => !object.draft && object.name.includes(${{ steps.base_branch.outputs.result }}))
                 .sort((a, b) => {
                   return Date.parse(a.published_at) + Date.parse(b.published_at)
                 })
             console.log(sortedReleaseList)
             return sortedReleaseList
+
+      - name: Set npx command of github-changes
+        id: npx_command
+        uses: actions/github-script@v3
+        with:
+          result-encoding: string
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: | 
+            const tagList = ${{ steps.tag_list.outputs.result }}
+            // 同じbaseブランチで発行されたreleaseがない場合は全てのログを出力し、ある場合は最後のrelease以降のログのみ出力する。
+            if(tagList.length === 0) {
+              return 'npx github-changes -o ${{ github.repository_owner }} -r ${{ github.event.repository.name }} --hide-tag-names --only-pulls --use-commit-body -z Asia/Tokyo -k ${{ github.token }} -b ${{ steps.head_branch.outputs.result }}'
+            } else {
+              return `npx github-changes -o ${{ github.repository_owner }} -r ${{ github.event.repository.name }} --hide-tag-names --only-pulls --use-commit-body -z Asia/Tokyo -k ${{ github.token }} -b ${{ steps.head_branch.outputs.result }} --between-tags ${tagList[0].tag_name}`
+            }
+
+      - name: Run github-changes and create the change log file
+        uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: npm i -D github-changes
+      - run: ${{ steps.npx_command.outputs.result }}
+
+      - name: Cat the change log file and format output
+        id: log
+        run: |
+          # 整形しないと最初の一行しか取得できないので、一度変数に入れたあとに成形する
+          LOG="$(cat CHANGELOG.md)"
+          LOG="${LOG//'%'/'%25'}"
+          LOG="${LOG//$'\n'/'%0A'}"
+          LOG="${LOG//$'\r'/'%0D'}"
+          echo "::set-output name=LOG::$LOG"
+
+      - name: Set change logs on a pull request body 
+        uses: actions/github-script@v3
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: | 
+            const { owner, repo } = context.repo
+            const { data } = await github.pulls.update({
+              owner,
+              repo,
+              pull_number: 134,
+              body: ${{ toJson(steps.log.outputs.log) }}
+            })
