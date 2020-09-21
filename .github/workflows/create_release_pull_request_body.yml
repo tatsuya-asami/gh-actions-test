@@ -14,7 +14,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Get all tags
+      - name: Get branch name
+        id: branch
+        uses: actions/github-script@v3
+        with:
+          result-encoding: string
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: | 
+            const test = await context.payload;
+            console.log(test)
+          
+      - name: Get related tags
         id: tag
         uses: actions/github-script@v3
         with:
@@ -26,12 +36,12 @@ jobs:
               owner,
               repo,
             })
-            // console.log(data)
             const branchName = 'master'
-            const filteredReleases = 
+            const sortedReleaseList = 
               data
                 .filter((object) => !object.draft && object.name.includes(branchName))
                 .sort((a, b) => {
                   return Date.parse(a.published_at) + Date.parse(b.published_at)
                 })
-            console.log(filteredReleases)
+            console.log(sortedReleaseList)
+            return sortedReleaseList
