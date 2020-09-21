@@ -36,7 +36,9 @@ jobs:
         with: 
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            console.log(context.payload.repository.pulls_url[57])
+            const test = context.issue
+            console.log(test)
+            console.log(context.payload.repository.pulls_url[56])
             console.log(context.payload.repository.pulls_url)
             const payload = context.payload
             const pulls = payload.repository
