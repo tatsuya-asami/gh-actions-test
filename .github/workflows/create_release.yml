@@ -50,6 +50,14 @@ jobs:
               pull_number
             })
             console.log(data)
+            console.log(data.comments_url)
+
+            const comment = await github.listReviewComments({
+              owner,
+              repo,
+              pull_number
+            })
+            console.log(comment)
             
       - name: Create Release
         id: create_release
