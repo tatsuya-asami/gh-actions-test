@@ -26,5 +26,7 @@ jobs:
               owner,
               repo,
             })
-            const lastReleaseTag = data.find((object) => !object.draft && object.name.includes('master'))
+            console.log(data)
+            const branchName = 'master'
+            const lastReleaseTag = data.find((object) => !object.draft && object.name.includes(branchName))
             console.log(lastReleaseTag)
