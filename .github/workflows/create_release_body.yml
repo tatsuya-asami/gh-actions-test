@@ -1,0 +1,27 @@
+name: Put logs on a body of release pull request
+
+on:
+  pull_request:
+    branches:
+      - 'release/**'
+
+jobs:
+  build:
+    name: Put logs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get all tags
+        id: tag
+        uses: actions/github-script@v3
+        with:
+          result-encoding: string
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          run: | 
+            const { owner, repo } = await context.repo
+            console.log(owner)
+            console.log(repo)
+            const test = await github.listRelease({
+              owner,
+              repo,
+            })
+            console.log(test)
