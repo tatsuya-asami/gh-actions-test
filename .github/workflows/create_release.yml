@@ -36,7 +36,7 @@ jobs:
         with: 
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            const test = context.issue('tatsuya-asami', 'gh-actions-test', 60)
+            const test = context.issue
             console.log(test)
             console.log(context.payload.repository.pulls_url[60])
             console.log(context.payload.repository.pulls_url)
