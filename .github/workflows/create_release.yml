@@ -38,6 +38,7 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             const { commits } = await context.payload;
+            // プルリク番号を取得するためにマージコミットを取得
             const mergeCommit = commits.find((object) => object.message.includes('Merge pull request'))
             if(!mergeCommit) {
               console.error('merge commitが存在しません。手動でリリースを作成して下さい。')
@@ -45,13 +46,13 @@ jobs:
             const pull_number = mergeCommit.message.split(' ')[3].slice(1)
             console.log(pull_number)
             const { owner, repo } = await context.repo
+
+            // マージしたプルリクのbodyを返す
             const { data } = await github.pulls.get({
               owner,
               repo,
               pull_number
             })
-            // 出力
-            console.log(data.body)
             return data.body
             
       - name: Create Release
@@ -64,10 +65,6 @@ jobs:
           release_name:  ${{ steps.date.outputs.date}}_${{ steps.number_of_deploy_today.outputs.number_of_deploy_today}}_release_${{ steps.branch.outputs.branch }}
           body: |
             ${{ steps.set_body.outputs.result}}
-            - First Change
-            - Second Change
-            ${{ steps.tag.outputs.list }}
-            ${{ steps.branch.outputs.branch }}
             
           draft: true
           prerelease: false
