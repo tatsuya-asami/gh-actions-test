@@ -21,8 +21,9 @@ jobs:
           result-encoding: string
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: | 
-            const test = await context.payload;
-            console.log(test)
+            const ref = await context.payload.pull_request.base;
+            console.log(ref)
+            return ref
           
       - name: Get related tags
         id: tag
