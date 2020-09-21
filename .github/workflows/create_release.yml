@@ -52,7 +52,7 @@ jobs:
             })
             // 出力
             console.log(data.body)
-            return echo "${{steps.set_body.outputs.result}}""
+            return data.body
             
       - name: Create Release
         id: create_release
