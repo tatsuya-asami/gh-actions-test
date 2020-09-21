@@ -31,14 +31,8 @@ jobs:
             const filteredReleases = 
               data
                 .filter((object) => !object.draft && object.name.includes(branchName))
-                .map((param) => {
-                  return {
-                    ...param,
-                    created_at: Date.parse(param.created_at)
-                  }
+                .sort((a, b) => {
+                  return Date.parse(a.published_at) + Date.parse(b.published_at)
+                })
             })
-            // console.log(filteredReleases)
-            const sorted = filteredReleases.sort((a,b) => {
-              return a.created_at + b.created_at
-            })
-            console.log(sorted)
+            console.log(filteredReleases)
