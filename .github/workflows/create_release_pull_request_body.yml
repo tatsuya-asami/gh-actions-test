@@ -21,7 +21,7 @@ jobs:
           result-encoding: string
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: | 
-            const { ref } = await context.payload.pull_request.base;
+            const { ref } = context.payload.pull_request.base;
             console.log(ref)
             return ref
           
