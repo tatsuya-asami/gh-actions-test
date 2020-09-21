@@ -2,8 +2,6 @@ name: Put logs on a body of release pull request
 
 on:
   pull_request:
-    branches:
-      - 'release/**'
 
 jobs:
   build:
