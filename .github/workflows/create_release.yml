@@ -14,11 +14,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set how many deployments today
-        id: number_of_deploy_today
-        # FIX_ME: 本日何度目のdeployか。条件が難しい
-        run: echo "::set-output name=number_of_deploy_today::0"
-
       - name: Set current date
         id: date
         run: echo "::set-output name=date::$(date +'%Y%m%d')"
@@ -26,6 +21,36 @@ jobs:
       - name: Set current branch name
         id: branch
         run: echo "::set-output name=branch::${GITHUB_REF##*/}"
+
+      - name: Set how many releases today
+        id: number_of_release_today
+        uses: actions/github-script@v3
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: | 
+            const { owner, repo } = context.repo
+            const { data } = await github.repos.listReleases({
+              owner,
+              repo,
+            })
+            // 'yyyy-mm-date'に整形する関数
+            const formatDate = (dt) => {
+              const y = dt.getFullYear();
+              const m = ('00' + (dt.getMonth()+1)).slice(-2);
+              const d = ('00' + dt.getDate()).slice(-2);
+              return (`${y}-${m}-${d}`);
+            }
+
+            // 本日作られた同じbaseブランチのドラフトを除くrelease一覧を抽出し、新しいreleaseから順番に並び替える
+            const sortedReleaseList = 
+              data
+                .filter((object) => !object.draft && object.name.includes('master') && object.published_at.substr(0,10) === formatDate(new Date()))
+                .sort((a, b) => {
+                  console.log(a.published_at)
+                  return Date.parse(a.published_at) + Date.parse(b.published_at)
+                })
+            console.log(sortedReleaseList.length)
+            return sortedReleaseList.length
 
       - name: Set a body from a comment of pull request.
         id: set_body
@@ -72,8 +97,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
-          tag_name: ${{ steps.date.outputs.date}}_${{ steps.number_of_deploy_today.outputs.number_of_deploy_today}}_release_${{ steps.branch.outputs.branch }}
-          release_name:  ${{ steps.date.outputs.date}}_${{ steps.number_of_deploy_today.outputs.number_of_deploy_today}}_release_${{ steps.branch.outputs.branch }}
+          tag_name: ${{ steps.date.outputs.date}}_${{ steps.number_of_release_today.outputs.result}}_release_${{ steps.branch.outputs.branch }}
+          release_name:  ${{ steps.date.outputs.date}}_${{ steps.number_of_release_today.outputs.result}}_release_${{ steps.branch.outputs.branch }}
           body: |
             ${{ steps.set_body.outputs.result}}
             
