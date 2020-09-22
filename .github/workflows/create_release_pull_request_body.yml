@@ -29,6 +29,7 @@ jobs:
           script: | 
             const { ref } = context.payload.pull_request.head;
             console.log(ref)
+            console.log(context)
             return ref
           
       - name: Get related release list
