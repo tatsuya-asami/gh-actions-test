@@ -50,7 +50,7 @@ jobs:
               issue_number: pull_number
             })
             // change logが載っているコメントのidを取得
-            const { comment_id } = commentList.data.find((object) => object.id.includes("## Change Log"))
+            const { comment_id } = commentList.data.find((object) => object.body.includes("## Change Log"))
             if(!comment_id) {
               console.error('change logが取得できていません。')
             }
