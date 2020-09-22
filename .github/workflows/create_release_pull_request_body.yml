@@ -101,10 +101,9 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: | 
             const { owner, repo } = context.repo
-            console.log(${{ steps.pull_request_number.outputs.result }})
             const { data } = await github.pulls.update({
               owner,
               repo,
-              pull_number: 134,
+              pull_number: ${{ steps.pull_request_number.outputs.result }},
               body: ${{ toJson(steps.log.outputs.log) }}
             })
