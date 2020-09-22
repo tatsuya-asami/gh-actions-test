@@ -108,7 +108,7 @@ jobs:
               repo,
               issue_number: ${{ steps.pull_request_number.outputs.result }}
             })
-
+            console.log(${{ steps.pull_request_number.outputs.result }})
             const loggedComment = commentList.data.find((object) => object.body.includes("## Change Log"))
             console.log(loggedComment)
 
