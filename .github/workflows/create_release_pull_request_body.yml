@@ -29,8 +29,17 @@ jobs:
           script: | 
             const { ref } = context.payload.pull_request.head;
             console.log(ref)
-            console.log(context)
             return ref
+
+      - name: Get pull request number
+        id: pull_request_number
+        uses: actions/github-script@v3
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: | 
+            const { number } = context.payload.pull_request;
+            console.log(number)
+            return number
           
       - name: Get related release list
         id: tag_list
@@ -92,6 +101,7 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: | 
             const { owner, repo } = context.repo
+            console.log(${{ steps.pull_request_number.outputs.result }})
             const { data } = await github.pulls.update({
               owner,
               repo,
