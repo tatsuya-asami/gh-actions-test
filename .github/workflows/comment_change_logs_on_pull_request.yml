@@ -57,7 +57,7 @@ jobs:
               data
                 .filter((object) => !object.draft && object.name.includes(${{ steps.base_branch.outputs.result }}))
                 .sort((a, b) => {
-                  return Date.parse(a.published_at) + Date.parse(b.published_at)
+                  return Date.parse(a.published_at) < Date.parse(b.published_at) ? 1 : -1
                 })
             console.log(sortedReleaseList)
             return sortedReleaseList
