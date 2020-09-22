@@ -101,9 +101,31 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: | 
             const { owner, repo } = context.repo
-            const { data } = await github.issues.createComment({
+
+            // マージしたプルリクのコメントを取得
+            const commentList = await github.issues.listComments({
               owner,
               repo,
-              issue_number: ${{ steps.pull_request_number.outputs.result }},
-              body: ${{ toJson(steps.log.outputs.log) }}
+              issue_number: ${{ steps.pull_request_number.outputs.result }}
             })
+
+            const loggedComment = commentList.data.find((object) => object.body.includes("## Change Log"))
+            console.log(loggedComment)
+
+            // すでにchange logのコメントがある場合はそれを上書きし、ない場合は新たにコメントを作る
+            if(loggedComment) {
+              github.issues.updateComment({
+                owner,
+                repo,
+                comment_id: loggedComment.id,
+                body: ${{ toJson(steps.log.outputs.log) }}
+              })
+            } else {
+              github.issues.createComment({
+                owner,
+                repo,
+                issue_number: ${{ steps.pull_request_number.outputs.result }},
+                body: ${{ toJson(steps.log.outputs.log) }}
+              })
+            }
+
