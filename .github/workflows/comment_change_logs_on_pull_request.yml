@@ -3,8 +3,10 @@ name: Set change logs on a pull request comment
 on:
   pull_request:
     branches: 
-      - '**/master'
-      - '**/demo'
+      - 'master'
+      - '*/master'
+      - 'demo'
+      - '*/demo'
 
 jobs:
   build:

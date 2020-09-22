@@ -5,6 +5,8 @@ on:
     branches:
       - 'master'
       - '*/master'
+      - 'demo'
+      - '*/demo'
 
 jobs:
   build:
@@ -14,15 +16,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set current date
+      - name: Get current date
         id: date
         run: echo "::set-output name=date::$(date +'%Y%m%d')"
 
-      - name: Set current branch name
+      - name: Get current branch name
         id: branch
         run: echo "::set-output name=branch::${GITHUB_REF##*/}"
 
-      - name: Set how many releases today
+      - name: Get how many release today
         id: number_of_release_today
         uses: actions/github-script@v3
         with:
@@ -60,19 +62,17 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             const { commits } = context.payload;
-            console.log(commits)
             // プルリク番号を取得するためにマージコミットを取得
-            const sortedList = commits.sort((a, b) => {
-              return Date.parse(a.timestamp) < Date.parse(b.timestamp) ? 1 : -1
-            })
-            console.log(sortedList)
-            const mergeCommit = sortedList.find((object) => object.message.includes('Merge pull request'))
+            const mergeCommit = 
+              commits
+              .sort((a, b) => Date.parse(a.timestamp) < Date.parse(b.timestamp) ? 1 : -1)
+              .find((object) => object.message.includes('Merge pull request'))
             console.log(mergeCommit)
             if(!mergeCommit) {
               console.error('merge commitが存在しません。手動でリリースを作成して下さい。')
             }
             const pull_number = mergeCommit.message.split(' ')[3].slice(1)
-            console.log(pull_number)
+            console.log('pull_number:' pull_number)
 
             const { owner, repo } = context.repo
             // マージしたプルリクのコメントを取得
