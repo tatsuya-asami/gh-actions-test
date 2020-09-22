@@ -65,7 +65,6 @@ jobs:
             if(!mergeCommit) {
               console.error('merge commitが存在しません。手動でリリースを作成して下さい。')
             }
-            console.log(mergeCommit)
             const pull_number = mergeCommit.message.split(' ')[3].slice(1)
             console.log(pull_number)
 
