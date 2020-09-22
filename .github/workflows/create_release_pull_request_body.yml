@@ -30,6 +30,16 @@ jobs:
             const { ref } = context.payload.pull_request.head;
             console.log(ref)
             return ref
+
+      - name: Get pull request number
+        id: pull_request_number
+        uses: actions/github-script@v3
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: | 
+            const { number } = context.payload.pull_request;
+            console.log(number)
+            return number
           
       - name: Get related release list
         id: tag_list
@@ -64,7 +74,7 @@ jobs:
             if(tagList.length === 0) {
               return 'npx github-changes -o ${{ github.repository_owner }} -r ${{ github.event.repository.name }} --hide-tag-names --only-pulls --use-commit-body -z Asia/Tokyo -k ${{ github.token }} -b ${{ steps.head_branch.outputs.result }}'
             } else {
-              return `npx github-changes -o ${{ github.repository_owner }} -r ${{ github.event.repository.name }} --hide-tag-names --only-pulls --use-commit-body -z Asia/Tokyo -k ${{ github.token }} -b ${{ steps.head_branch.outputs.result }} --between-tags ${tagList[0].tag_name}`
+              return `npx github-changes -o ${{ github.repository_owner }} -r ${{ github.event.repository.name }} --hide-tag-names --only-pulls --use-commit-body -z Asia/Tokyo -k ${{ github.token }} -b ${{ steps.head_branch.outputs.result }} --between-tags ${tagList[0].tag_name} ...`
             }
 
       - name: Run github-changes and create the change log file
@@ -94,6 +104,6 @@ jobs:
             const { data } = await github.pulls.update({
               owner,
               repo,
-              pull_number: 134,
+              pull_number: ${{ steps.pull_request_number.outputs.result }},
               body: ${{ toJson(steps.log.outputs.log) }}
             })
