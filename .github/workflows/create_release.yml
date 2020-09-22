@@ -33,6 +33,7 @@ jobs:
               owner,
               repo,
             })
+
             // 'yyyy-mm-date'に整形する関数
             const formatDate = (dt) => {
               const y = dt.getFullYear();
