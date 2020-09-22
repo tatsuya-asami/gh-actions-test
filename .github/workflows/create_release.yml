@@ -54,10 +54,10 @@ jobs:
             console.log(commentList)
             // change logが載っているコメントのidを取得
             const { comment_id } = commentList.data.find((object) => object.body.includes("## Change Log"))
+            console.log(comment_id)
             if(!comment_id) {
               console.error('change logが取得できていません。')
             }
-            console.log(comment_id)
             const commentParams = await github.issues.getComment({
               owner,
               repo,
