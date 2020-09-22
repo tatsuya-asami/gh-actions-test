@@ -16,7 +16,7 @@ jobs:
 
       - name: Set how many deployments today
         id: number_of_deploy_today
-        # FIX_ME: 本日何度目のdeployか。条件が難しい。
+        # FIX_ME: 本日何度目のdeployか。条件が難しい
         run: echo "::set-output name=number_of_deploy_today::0"
 
       - name: Set current date
@@ -34,23 +34,35 @@ jobs:
           result-encoding: string
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            const { commits } = await context.payload;
+            const { commits } = context.payload;
             // プルリク番号を取得するためにマージコミットを取得
             const mergeCommit = commits.find((object) => object.message.includes('Merge pull request'))
             if(!mergeCommit) {
               console.error('merge commitが存在しません。手動でリリースを作成して下さい。')
             }
             const pull_number = mergeCommit.message.split(' ')[3].slice(1)
-            console.log(pull_number)
-            const { owner, repo } = await context.repo
 
-            // マージしたプルリクのbodyを返す
-            const { data } = await github.pulls.get({
+            const { owner, repo } = context.repo
+            // マージしたプルリクのコメントを取得
+            const commentList = await github.issues.listComments({
               owner,
               repo,
-              pull_number
+              issue_number: pull_number
             })
-            return data.body
+            // change logが載っているコメントのidを取得
+            const { comment_id } = commentList.data.find((object) => object.id.includes("## Change Log"))
+            if(!comment_id) {
+              console.error('change logが取得できていません。')
+            }
+            console.log(comment_id)
+            const commentParams = await github.issues.getComment({
+              owner,
+              repo,
+              comment_id
+            })
+            console.log(commentParams.data.body)
+
+            return commentParams.data.body
             
       - name: Create draft release
         id: create_release
