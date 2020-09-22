@@ -63,13 +63,12 @@ jobs:
             const { commits } = context.payload;
             console.log(commits)
             // プルリク番号を取得するためにマージコミットを取得
-            const mergeCommit = commits
-                                  .sort((a, b) => {
-                                    return Date.parse(a.timestamp) - Date.parse(b.timestamp)
-                                  })
-                                  .find((object) => object.message.includes('Merge pull request'))
+            const sortedList = commits.sort((a, b) => {
+              return Date.parse(a.timestamp) - Date.parse(b.timestamp)
+            })
+            console.log(sortedList)
+            const mergeCommit = sortedList.find((object) => object.message.includes('Merge pull request'))
             console.log(mergeCommit)
-            // const mergeCommit = commits.find((object) => object.message.includes('Merge pull request'))
             if(!mergeCommit) {
               console.error('merge commitが存在しません。手動でリリースを作成して下さい。')
             }
