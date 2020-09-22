@@ -60,6 +60,7 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             const { commits } = context.payload;
+            console.log(commits)
             // プルリク番号を取得するためにマージコミットを取得
             const mergeCommit = commits.find((object) => object.message.includes('Merge pull request'))
             if(!mergeCommit) {
