@@ -65,7 +65,7 @@ jobs:
             // プルリク番号を取得するためにマージコミットを取得
             const mergeCommit = commits
                                   .sort((a, b) => {
-                                    return Date.parse(a.timestamp) + Date.parse(b.timestamp)
+                                    return Date.parse(a.timestamp) - Date.parse(b.timestamp)
                                   })
                                   .find((object) => object.message.includes('Merge pull request'))
             console.log(mergeCommit)
