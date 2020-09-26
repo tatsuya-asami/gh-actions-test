@@ -13,6 +13,9 @@ jobs:
     name: Set change logs on a pull request comment
     runs-on: ubuntu-latest
     steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      
       - name: Get base branch name
         id: base_branch
         uses: actions/github-script@v3
@@ -49,20 +52,8 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: | 
-            const { owner, repo } = context.repo
-            const { data } = await github.repos.listReleases({
-              owner,
-              repo,
-            })
-            // 同じbaseブランチのドラフトを除くrelease一覧を抽出し、新しいreleaseから順番に並び替える
-            const sortedReleaseList = 
-              data
-                .filter((object) => !object.draft && object.name.includes(${{ steps.base_branch.outputs.result }}))
-                .sort((a, b) => {
-                  return Date.parse(a.published_at) < Date.parse(b.published_at) ? 1 : -1
-                })
-            console.log(sortedReleaseList)
-            return sortedReleaseList
+            const script = require(`${process.env.GITHUB_WORKSPACE}/path/to/actions/getRelatedReleaseList.js`)
+            return script({context, github})
 
       - name: Set npx command of github-changes
         id: npx_command
@@ -80,8 +71,7 @@ jobs:
             }
 
       - name: Run github-changes and create the change log file
-        uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+        uses: actions/setup-node@v1
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: npm i -D github-changes
