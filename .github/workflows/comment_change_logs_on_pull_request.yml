@@ -13,6 +13,9 @@ jobs:
     name: Set change logs on a pull request comment
     runs-on: ubuntu-latest
     steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      
       - name: Get base branch name
         id: base_branch
         uses: actions/github-script@v3
@@ -68,8 +71,7 @@ jobs:
             }
 
       - name: Run github-changes and create the change log file
-        uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+        uses: actions/setup-node@v1
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: npm i -D github-changes
