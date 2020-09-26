@@ -49,20 +49,8 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: | 
-            const { owner, repo } = context.repo
-            const { data } = await github.repos.listReleases({
-              owner,
-              repo,
-            })
-            // 同じbaseブランチのドラフトを除くrelease一覧を抽出し、新しいreleaseから順番に並び替える
-            const sortedReleaseList = 
-              data
-                .filter((object) => !object.draft && object.name.includes(${{ steps.base_branch.outputs.result }}))
-                .sort((a, b) => {
-                  return Date.parse(a.published_at) < Date.parse(b.published_at) ? 1 : -1
-                })
-            console.log(sortedReleaseList)
-            return sortedReleaseList
+            const script = require(`${process.env.GITHUB_WORKSPACE}/path/to/actions/getRelatedReleaseList.js`)
+            return script({context, github})
 
       - name: Set npx command of github-changes
         id: npx_command
