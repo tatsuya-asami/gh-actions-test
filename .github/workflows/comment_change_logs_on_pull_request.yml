@@ -52,8 +52,8 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: | 
-            const script = require(`${process.env.GITHUB_WORKSPACE}/path/to/actions/getRelatedReleaseList.js`)
-            return script({context, github})
+            const script = require(`${process.env.GITHUB_WORKSPACE}/actions/getRelatedReleaseList.js`)
+            return script({context, github} ,${{ steps.base_branch.outputs.result }})
 
       - name: Set npx command of github-changes
         id: npx_command
@@ -92,32 +92,7 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: | 
-            const { owner, repo } = context.repo
-
-            // マージしたプルリクのコメントを取得
-            const commentList = await github.issues.listComments({
-              owner,
-              repo,
-              issue_number: ${{ steps.pull_request_number.outputs.result }}
-            })
-            console.log(${{ steps.pull_request_number.outputs.result }})
-            const loggedComment = commentList.data.find((object) => object.body.includes("## Change Log"))
-            console.log(loggedComment)
-
-            // すでにchange logのコメントがある場合はそれを上書きし、ない場合は新たにコメントを作る
-            if(loggedComment) {
-              github.issues.updateComment({
-                owner,
-                repo,
-                comment_id: loggedComment.id,
-                body: ${{ toJson(steps.log.outputs.log) }}
-              })
-            } else {
-              github.issues.createComment({
-                owner,
-                repo,
-                issue_number: ${{ steps.pull_request_number.outputs.result }},
-                body: ${{ toJson(steps.log.outputs.log) }}
-              })
-            }
+            const script = require(`${process.env.GITHUB_WORKSPACE}/actions/setChangeLogsOnAPullRequestComment.js`)
+            script({context, github}, ${{ steps.pull_request_number.outputs.result }}, ${{ toJson(steps.log.outputs.log) }})
+            
 
