@@ -31,7 +31,7 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: | 
             const script = require(`${process.env.GITHUB_WORKSPACE}/actions/howManyRelease.js`)
-            return script()
+            return script({context, github})
 
       - name: Set a body from a comment of pull request.
         id: set_body
