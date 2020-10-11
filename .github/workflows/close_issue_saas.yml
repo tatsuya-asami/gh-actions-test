@@ -5,6 +5,7 @@ on:
     types: [closed]
     branches:
       - testClose
+      - test
 
 jobs:
   closeIssueOnPrMergeTrigger:
